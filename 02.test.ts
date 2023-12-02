@@ -22,20 +22,37 @@ const mapGame = (line: string) => {
     return red <= 12 && green <= 13 && blue <= 14;
   });
 
+  const total = sets.reduce(
+    (sum, { red, green, blue }) => {
+      sum.red = Math.max(sum.red, red);
+      sum.green = Math.max(sum.green, green);
+      sum.blue = Math.max(sum.blue, blue);
+      return sum;
+    },
+    { red: 0, green: 0, blue: 0 }
+  );
+
   return {
     id: parseInt(id),
     possible,
+    power: total.red * total.green * total.blue,
   };
 };
 
 test("Day 2: Cube Conundrum", () => {
-  const result = data
-    .split("\n")
-    .map(mapGame)
+  const games = data.split("\n").map(mapGame);
+
+  const firstResult = games
     .filter((g) => g.possible)
     .reduce((sum, g) => {
       return sum + g.id;
     }, 0);
 
-  expect(result).toBe(2476);
+  expect(firstResult).toBe(2476);
+
+  const secondResult = games.reduce((sum, g) => {
+    return sum + g.power;
+  }, 0);
+  expect(secondResult).toBe(54911);
+  console.log("power", secondResult);
 });
