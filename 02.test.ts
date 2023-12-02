@@ -54,5 +54,4 @@ test("Day 2: Cube Conundrum", () => {
     return sum + g.power;
   }, 0);
   expect(secondResult).toBe(54911);
-  console.log("power", secondResult);
 });
