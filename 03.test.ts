@@ -38,26 +38,36 @@ test("Day 3: Gear Ratios", () => {
       return cells;
     })
     .flat()
-    .filter((c) => c.value !== "")
-    .filter((c) => {
-      const values = [];
-      for (let j = c.top; j <= c.bottom; j++) {
-        const row = rows[j] || [];
-        for (let i = c.left; i <= c.right; i++) {
-          values.push(row[i] || space);
-        }
+    .filter((c) => c.value !== "");
+
+  const gears = [] as {
+    top: number;
+    left: number;
+    right: number;
+    bottom: number;
+    value: string;
+  }[][];
+
+  rows.forEach((row, y) => {
+    row.split("").forEach((value, x) => {
+      if (value === "*") {
+        const gear = cells.filter((cell) => {
+          return (
+            cell.left <= x &&
+            x <= cell.right &&
+            cell.top <= y &&
+            y <= cell.bottom
+          );
+        });
+        gears.push(gear);
       }
-
-      const res = values.some(
-        (value) => !(digits.includes(value) || value === space)
-      );
-
-      return res;
     });
+  });
 
-  const sum = cells
-    .map((c) => parseInt(c.value))
-    .reduce((sum, v) => sum + v, 0);
-
-  expect(sum).toBe(509115);
+  console.log(
+    gears
+      .filter((g) => g.length >= 2)
+      .map((gear) => gear.reduce((prod, g) => prod * parseInt(g.value), 1))
+      .reduce((sum, v) => sum + v, 0)
+  );
 });
