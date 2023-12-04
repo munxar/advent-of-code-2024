@@ -1,4 +1,4 @@
-//import data from "./data/0.txt";
+//import data from "./data/04.txt";
 import { test, expect } from "bun:test";
 const data = `Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53
 Card 2: 13 32 20 16 61 | 61 30 68 82 17 32 24 19
@@ -29,16 +29,18 @@ test("Day 4: Scratchcards", () => {
 
     row.numbers.forEach((number) => {
       if (row.winning.includes(number)) {
-        if (s === 0) {
-          s = 1;
-        } else {
-          s *= 2;
-        }
+        s++;
       }
     });
 
-    return s;
+    return { winning: s, copy: 1 };
   });
-  const res = cards.reduce((sum, v) => sum + v, 0);
-  expect(res).toBe(13);
+
+  cards.forEach((card, i) => {
+    for (let j = i + 1; j <= i + card.winning; j++) {
+      cards[j].copy += card.copy;
+    }
+  });
+  const res = cards.reduce((sum, v) => sum + v.copy, 0);
+  expect(res).toBe(30);
 });
