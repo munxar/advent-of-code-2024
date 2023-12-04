@@ -64,10 +64,9 @@ test("Day 3: Gear Ratios", () => {
     });
   });
 
-  console.log(
-    gears
-      .filter((g) => g.length >= 2)
-      .map((gear) => gear.reduce((prod, g) => prod * parseInt(g.value), 1))
-      .reduce((sum, v) => sum + v, 0)
-  );
+  const res = gears
+    .filter((g) => g.length >= 2)
+    .map((gear) => gear.reduce((prod, g) => prod * parseInt(g.value), 1))
+    .reduce((sum, v) => sum + v, 0);
+  expect(res).toBe(75220503);
 });
